@@ -1,8 +1,28 @@
 services:
-  - type: docker
-    name: typesense-app
+  - type: web
+    name: typesense-server
+    env: docker
     plan: free
-    dockerComposeFilePath: docker-compose.yml
+    region: oregon
+    repo: https://github.com/jscore95/typesense-render-demo
+    dockerfilePath: typesense/Dockerfile
     envVars:
       - key: TYPESENSE_API_KEY
         value: xyz
+    healthCheckPath: /
+    autoDeploy: true
+
+  - type: web
+    name: typesense-dashboard
+    env: docker
+    plan: free
+    region: oregon
+    repo: https://github.com/jscore95/typesense-render-demo
+    dockerfilePath: dashboard/Dockerfile
+    envVars:
+      - key: TYPESENSE_API_KEY
+        value: xyz
+      - key: TYPESENSE_HOST
+        value: https://typesense-server.onrender.com
+    healthCheckPath: /
+    autoDeploy: true
