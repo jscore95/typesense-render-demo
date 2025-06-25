@@ -3,14 +3,16 @@ services:
     name: typesense-server
     env: docker
     plan: free
-    region: oregon
-    repo: https://github.com/jscore95/typesense-render-demo
-    dockerfilePath: typesense/Dockerfile
+    image: typesense/typesense:0.25.1
+    disk:
+      name: typesense-data
+      mountPath: /data
+      sizeGB: 1
     envVars:
       - key: TYPESENSE_API_KEY
-        value: xyz
-    healthCheckPath: /
-    autoDeploy: true
+        value: your-secure-key
+    dockerCommand: >
+      typesense-server --data-dir /data --api-key $TYPESENSE_API_KEY --listen-port 8080
 
   - type: web
     name: typesense-dashboard
