@@ -1,10 +1,15 @@
-FROM node:18
+kFROM node:18
 
 WORKDIR /app
 
-RUN git clone https://github.com/typesense/typesense-dashboard.git . \
-  && yarn install \
-  && yarn build
+# Download and unzip instead of using git
+RUN apt-get update && apt-get install -y unzip curl \
+  && curl -L https://github.com/typesense/typesense-dashboard/archive/refs/heads/main.zip -o dashboard.zip \
+  && unzip dashboard.zip \
+  && mv typesense-dashboard-main/* . \
+  && rm -rf dashboard.zip typesense-dashboard-main
+
+RUN yarn install && yarn build
 
 RUN yarn global add serve
 
