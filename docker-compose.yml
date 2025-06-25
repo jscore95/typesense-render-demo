@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  typesense:
+    image: typesense/typesense:0.25.1
+    command: >
+      typesense-server
+      --data-dir /data
+      --api-key=xyz
+      --enable-cors
+    volumes:
+      - typesense-data:/data
+    ports:
+      - "8108:8108"
+
+  dashboard:
+    build: ./typesense-dashboard
+    ports:
+      - "5000:80"
+    environment:
+      VITE_TYPESENSE_HOST: http://typesense:8108
+      VITE_PUBLIC_API_KEY: xyz
+    depends_on:
+      - typesense
+
+volumes:
+  typesense-data:

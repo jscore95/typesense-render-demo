@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: typesense
+    env: docker
+    plan: free
+    dockerfilePath: Dockerfile
+    buildCommand: ''
+    startCommand: ''
+    dockerContext: .
+    dockerComposePath: docker-compose.yml
+    envVars:
+      - key: TYPESENSE_API_KEY
+        value: xyz
